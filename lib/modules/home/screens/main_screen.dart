@@ -1,103 +1,146 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sell_app/modules/home/widgets/carsoel_widget.dart';
-import 'package:sell_app/utils/component/components.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:sell_app/modules/chat/screens/user_chat.dart';
+import 'package:sell_app/modules/home/controller/cubit/home_cubit.dart';
+import 'package:sell_app/modules/home/controller/states/home_states.dart';
+
+import 'package:sell_app/modules/home/widgets/home_tap.dart';
+
 import 'package:sell_app/utils/themes/white_theme.dart';
 
 class HomeScreen extends StatelessWidget {
-  final _controller = TextEditingController();
+  late PersistentTabController _controllerTab;
+
+  List<Widget> _buildScreens = [
+    HomeTab(),
+    DefaultTabController(
+      length: 3,
+      child: TabBar(
+        labelColor: Colors.red,
+        unselectedLabelColor: Colors.grey,
+        indicatorColor: Colors.blue,
+        tabs: [
+          Container(
+            color: Colors.green,
+            width: double.infinity,
+            child: Tab(
+              icon: Icon(Icons.directions_car),
+              child: Text('d'),
+            ),
+          ),
+          Tab(icon: Icon(Icons.directions_transit)),
+          Tab(icon: Icon(Icons.directions_bike)),
+        ],
+      ),
+    ),
+    Column(
+      children: [
+        Text('zeco'),
+        SizedBox(
+          height: 123,
+        ),
+        Container(
+          height: 200,
+          child: GFAccordion(
+            title: 'GF Accordion',
+            content:
+                'GetFlutter is an open source library that comes with pre-build 1000+ UI components.',
+            collapsedTitleBackgroundColor: Colors.green,
+            collapsedIcon: Icon(Icons.add),
+            expandedIcon: Icon(Icons.minimize),
+          ),
+        ),
+      ],
+    ),
+    UserChatScreen(),
+    Container(),
+  ];
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home_filled),
+        activeColorPrimary: Color(0xff423E5B),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.account_balance_wallet_rounded),
+        activeColorPrimary: Color(0xff423E5B),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(
+          Icons.add,
+          color: primaryColorWhite,
+        ),
+        activeColorPrimary: Color(0xff423E5B),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.chat),
+        activeColorPrimary: Color(0xff423E5B),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.perm_identity_rounded),
+        activeColorPrimary: Color(0xff423E5B),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final query = MediaQuery.of(context).size.height;
+    _controllerTab = PersistentTabController(initialIndex: 0);
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        leading: InkWell(
-            highlightColor: Colors.transparent,
-            onTap: () {},
-            child: Image.asset(
-              'assets/images/more.png',
-              width: 40,
-              height: 40,
-            )),
-        leadingWidth: 55,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(.154),
-                borderRadius: BorderRadius.circular(124)),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_rounded,
-                  color: primaryColorWhite,
-                )),
-          ),
-          SizedBox(
-            width: 15,
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      height: query * .09,
-                    ),
-                    Expanded(
-                        child: Container(
-                      height: 45,
-                      child: defaultFormField(
-                          controller: _controller,
-                          type: TextInputType.text,
-                          label: 'Search',
-                          fillColor: Colors.grey.withOpacity(.05),
-                          labelColor: Colors.grey,
-                          suffix: Icon(
-                            Icons.search,
-                            color: Colors.grey.withOpacity(.5),
-                          ),
-                          suffixPressed: () {}),
-                    )),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    InkWell(
-                        onTap: () {},
-                        child: Image.asset('assets/images/Filter.png')),
-                  ],
-                ),
-                SizedBox(
-                  height: query * .02,
-                ),
-                Container(
-                  height: query * .4,
-                  child: CarsoelWidget(),
-                ),
-                SizedBox(
-                  height: query * .03,
-                ),
-                customText('Featured Property', fontWeight: FontWeight.bold),
-                SizedBox(
-                  height: query * .03,
-                ),
-                Container(
-                  height: query * .1,
-                  decoration: BoxDecoration(),
-                ),
-              ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BlocConsumer<SellAppCubitHome, SellAppHomeStates>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return PersistentTabView(
+            context,
+            navBarHeight: 50,
+
+            controller: _controllerTab,
+            screens: _buildScreens,
+            items: _navBarsItems(),
+            confineInSafeArea: false,
+            backgroundColor: Colors.white, // Default is Colors.white.
+            handleAndroidBackButtonPress: true, // Default is true.
+            resizeToAvoidBottomInset:
+                false, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+            stateManagement: true, // Default is true.
+            hideNavigationBarWhenKeyboardShows:
+                true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+            decoration: NavBarDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              colorBehindNavBar: Colors.white,
             ),
-          ),
-        ),
+            popAllScreensOnTapOfSelectedTab: false,
+            popActionScreens: PopActionScreensType.all,
+            itemAnimationProperties: ItemAnimationProperties(
+              // Navigation Bar's items animation properties.
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeInCirc,
+            ),
+            screenTransitionAnimation: ScreenTransitionAnimation(
+              // Screen transition animation on change of selected tab.
+              animateTabTransition: true,
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 200),
+            ),
+            navBarStyle: NavBarStyle.style15,
+            hideNavigationBar: !SellAppCubitHome.get(context).isBottomShow,
+            // Choose the nav bar style with this property.
+          );
+        },
       ),
+      body: _buildScreens[_controllerTab.index],
     );
   }
 }

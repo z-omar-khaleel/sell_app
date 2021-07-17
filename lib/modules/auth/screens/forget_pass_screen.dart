@@ -56,7 +56,7 @@ class ForgetPassword extends StatelessWidget {
                                 color: primaryColorWhite,
                               )
                             : null,
-                        borderRadius: 25,
+                        focusBorderRadius: 25,
                         controller: ref.emailControllerForgetPass,
                         type: TextInputType.text,
                         validate: (s) {

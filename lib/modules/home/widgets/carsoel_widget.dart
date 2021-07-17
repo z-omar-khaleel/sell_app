@@ -2,10 +2,14 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:sell_app/modules/home/models/carousel_info.dart';
-import 'package:sell_app/utils/component/components.dart';
-import 'package:sell_app/utils/themes/white_theme.dart';
+
+import 'common_style.dart';
 
 class CarsoelWidget extends StatefulWidget {
+  final List<CaroselInfo> _items;
+
+  CarsoelWidget(this._items);
+
   @override
   _CarsoelWidgetState createState() => _CarsoelWidgetState();
 }
@@ -13,48 +17,6 @@ class CarsoelWidget extends StatefulWidget {
 class _CarsoelWidgetState extends State<CarsoelWidget> {
   int index = 0;
 
-  List<CaroselInfo> _items = [
-    CaroselInfo(
-        isFav: false,
-        title: '425 Vine St #301, Seattle, WA',
-        price: 269.000,
-        area: 1200,
-        img: 'assets/images/house_home.png',
-        noBathroom: 2,
-        noNetwork: 6),
-    CaroselInfo(
-        isFav: false,
-        title: '425 Vine St #301, Seattle, WA',
-        price: 269.000,
-        area: 1200,
-        img: 'assets/images/house_home.png',
-        noBathroom: 2,
-        noNetwork: 6),
-    CaroselInfo(
-        isFav: false,
-        title: '425 Vine St #301, Seattle, WA',
-        price: 269.000,
-        area: 1200,
-        img: 'assets/images/house_home.png',
-        noBathroom: 2,
-        noNetwork: 6),
-    CaroselInfo(
-        isFav: false,
-        title: '425 Vine St #301, Seattle, WA',
-        price: 269.000,
-        area: 1200,
-        img: 'assets/images/house_home.png',
-        noBathroom: 2,
-        noNetwork: 6),
-    CaroselInfo(
-        isFav: false,
-        title: '425 Vine St #301, Seattle, WA',
-        price: 269.000,
-        area: 1200,
-        img: 'assets/images/house_home.png',
-        noBathroom: 2,
-        noNetwork: 6),
-  ];
   final CarouselController _carouselController = CarouselController();
 
   @override
@@ -74,7 +36,7 @@ class _CarsoelWidgetState extends State<CarsoelWidget> {
           onTap: () {},
           borderRadius: BorderRadius.circular(16),
           child: Container(
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.all(1),
             padding: EdgeInsets.all(7),
             decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(.1),
@@ -87,7 +49,7 @@ class _CarsoelWidgetState extends State<CarsoelWidget> {
                     children: [
                       Container(
                         child: Image.asset(
-                          _items[index].img,
+                          widget._items[index].img,
                           width: double.infinity,
                           fit: BoxFit.fill,
                         ),
@@ -112,7 +74,7 @@ class _CarsoelWidgetState extends State<CarsoelWidget> {
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
-                          padding: EdgeInsets.all(12),
+                          padding: EdgeInsets.all(11),
                           child: Container(
                             width: 95,
                             child: Row(
@@ -122,10 +84,10 @@ class _CarsoelWidgetState extends State<CarsoelWidget> {
                                   color: Colors.white,
                                 ),
                                 SizedBox(
-                                  width: 8,
+                                  width: 7,
                                 ),
                                 Text(
-                                  '${_items[index].noNetwork} Network',
+                                  '${widget._items[index].noNetwork} Network',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 15),
                                 )
@@ -140,60 +102,13 @@ class _CarsoelWidgetState extends State<CarsoelWidget> {
                 SizedBox(
                   height: 12,
                 ),
-                customText(_items[index].title, fontSize: 14),
-                SizedBox(
-                  height: 12,
-                ),
-                customText('\$ ${_items[index].price}',
-                    color: primaryColorWhite),
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                        child: Row(
-                      children: [
-                        Image.asset('assets/images/Bathroom.png'),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        customText('${_items[index].noBathroom} Bathroom',
-                            fontSize: 12)
-                      ],
-                    )),
-                    Expanded(
-                        child: Row(
-                      children: [
-                        Image.asset('assets/images/Bathroom.png'),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        customText('${_items[index].noBathroom} Bedroom',
-                            fontSize: 12)
-                      ],
-                    )),
-                  ],
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    Image.asset('assets/images/Space.png'),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    customText('${_items[index].area} Sq. Fit', fontSize: 13)
-                  ],
-                )
+                CommonWidget(widget._items[index])
               ],
             ),
           ),
         );
       },
-      itemCount: _items.length,
+      itemCount: widget._items.length,
     );
   }
 }

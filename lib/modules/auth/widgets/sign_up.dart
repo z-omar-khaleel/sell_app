@@ -45,7 +45,7 @@ class SignUpWidget extends StatelessWidget {
                             color: primaryColorWhite,
                           )
                         : null,
-                    borderRadius: 8,
+                    focusBorderRadius: 8,
                     controller: ref.emailControllerSignUp,
                     type: TextInputType.emailAddress,
                     validate: (s) {
@@ -71,7 +71,7 @@ class SignUpWidget extends StatelessWidget {
                       if (ref.keyRegister.currentState!.validate()) {}
                     },
                     key: GlobalKey(),
-                    borderRadius: 8,
+                    focusBorderRadius: 8,
                     controller: ref.passControllerSignUp,
                     type: TextInputType.text,
                     isPassword: ref.isPassword,
