@@ -49,7 +49,7 @@ class SetPassScreen extends StatelessWidget {
                             height: 5,
                           ),
                           defaultFormField(
-                              borderRadius: 20,
+                              focusBorderRadius: 20,
                               controller: ref.passControllerSetPass1,
                               type: TextInputType.text,
                               isPassword: ref.isPassword,
@@ -78,7 +78,7 @@ class SetPassScreen extends StatelessWidget {
                                 if (ref.keySetPass.currentState!.validate()) {}
                               },
                               key: GlobalKey(),
-                              borderRadius: 20,
+                              focusBorderRadius: 20,
                               controller: ref.passControllerSetPass2,
                               type: TextInputType.text,
                               isPassword: ref.isPassword,
